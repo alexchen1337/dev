@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  },
+  "homepage": "https://alexchen1337.github.io/dev",
+  "scripts": {
+  "predeploy": "npm run dev",
+  "deploy": "gh-pages -d build"
+}
+
+}
