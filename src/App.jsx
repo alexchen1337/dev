@@ -10,6 +10,13 @@ function App() {
   const [activeTab, setActiveTab] = useState('experience');
   const [modalExp, setModalExp] = useState(null);
   const [modalProject, setModalProject] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const experienceData = [
     {
@@ -131,8 +138,9 @@ function App() {
               <div className="timeline-title">{exp.title}</div>
               <div className="timeline-company">{exp.company}</div>
             </div>
-            <div className="timeline-period">{exp.period}</div>
+            {!isMobile && <div className="timeline-period">{exp.period}</div>}
           </div>
+          {isMobile && <div className="timeline-period" style={{marginTop: '0.5rem'}}>{exp.period}</div>}
         </div>
       ))}
       <div className="timeline-line" />
