@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import "./App.css";
 import NexusLogo from "./assets/Nexus.png";
 import AtlasLogo from "./assets/Atlas Esport Consulting.jpg";
@@ -148,35 +149,40 @@ function App() {
   );
 
   const renderModal = () => (
-    modalExp && (
-      <div className="exp-modal-overlay" onClick={() => setModalExp(null)}>
-        <div className="exp-modal" onClick={e => e.stopPropagation()}>
-          <img src={modalExp.logo} alt={modalExp.company + ' logo'} className="modal-logo" />
-          <div className="modal-header">
-            <div className="modal-title">{modalExp.title}</div>
-            <div className="modal-company">
-              {modalExp.companyLink ? (
-                <a href={modalExp.companyLink} className="card-title-link" target="_blank" rel="noopener noreferrer">{modalExp.company}</a>
-              ) : (
-                <span>{modalExp.company}</span>
-              )}
+    modalExp
+      ? createPortal(
+          (
+            <div className="exp-modal-overlay" onClick={() => setModalExp(null)}>
+              <div className="exp-modal" onClick={e => e.stopPropagation()}>
+                <img src={modalExp.logo} alt={modalExp.company + ' logo'} className="modal-logo" />
+                <div className="modal-header">
+                  <div className="modal-title">{modalExp.title}</div>
+                  <div className="modal-company">
+                    {modalExp.companyLink ? (
+                      <a href={modalExp.companyLink} className="card-title-link" target="_blank" rel="noopener noreferrer">{modalExp.company}</a>
+                    ) : (
+                      <span>{modalExp.company}</span>
+                    )}
+                  </div>
+                  <div className="modal-meta">{modalExp.location} • {modalExp.period}</div>
+                </div>
+                <div className="modal-tech">
+                  <span>Technologies:</span>
+                  {modalExp.technologies.map((tech, i) => (
+                    <span key={i} className="modal-tech-tag">{tech}</span>
+                  ))}
+                </div>
+                {Array.isArray(modalExp.description)
+                  ? modalExp.description.map((desc, i) => <p key={i} className="modal-desc-paragraph">{desc}</p>)
+                  : <p className="modal-desc-paragraph">{modalExp.description}</p>
+                }
+                <button className="modal-close" onClick={() => setModalExp(null)}>Close</button>
+              </div>
             </div>
-            <div className="modal-meta">{modalExp.location} • {modalExp.period}</div>
-          </div>
-          <div className="modal-tech">
-            <span>Technologies:</span>
-            {modalExp.technologies.map((tech, i) => (
-              <span key={i} className="modal-tech-tag">{tech}</span>
-            ))}
-          </div>
-          {Array.isArray(modalExp.description)
-            ? modalExp.description.map((desc, i) => <p key={i} className="modal-desc-paragraph">{desc}</p>)
-            : <p className="modal-desc-paragraph">{modalExp.description}</p>
-          }
-          <button className="modal-close" onClick={() => setModalExp(null)}>Close</button>
-        </div>
-      </div>
-    )
+          ),
+          document.body
+        )
+      : null
   );
 
   const renderProjects = () => (
@@ -191,31 +197,36 @@ function App() {
   );
 
   const renderProjectModal = () => (
-    modalProject && (
-      <div className="exp-modal-overlay" onClick={() => setModalProject(null)}>
-        <div className="exp-modal" onClick={e => e.stopPropagation()}>
-          <div className="modal-header">
-            <div className="modal-title">{modalProject.title}</div>
-            {modalProject.link && (
-              <a href={modalProject.link} className="modal-title-link" target="_blank" rel="noopener noreferrer">Project Link</a>
-            )}
-            <div className="modal-company">{Array.isArray(modalProject.tech) ? modalProject.tech.join(', ') : modalProject.tech}</div>
-          </div>
-          <div className="modal-tech">
-            <span>Technologies:</span>
-            {Array.isArray(modalProject.tech) ? modalProject.tech.map((tech, i) => (
-              <span key={i} className="modal-tech-tag">{tech}</span>
-            )) : (
-              <span className="modal-tech-tag">{modalProject.tech}</span>
-            )}
-          </div>
-          <ul className="modal-desc">
-            {modalProject.description.map((desc, i) => <li key={i}>{desc}</li>)}
-          </ul>
-          <button className="modal-close" onClick={() => setModalProject(null)}>Close</button>
-        </div>
-      </div>
-    )
+    modalProject
+      ? createPortal(
+          (
+            <div className="exp-modal-overlay" onClick={() => setModalProject(null)}>
+              <div className="exp-modal" onClick={e => e.stopPropagation()}>
+                <div className="modal-header">
+                  <div className="modal-title">{modalProject.title}</div>
+                  {modalProject.link && (
+                    <a href={modalProject.link} className="modal-title-link" target="_blank" rel="noopener noreferrer">Project Link</a>
+                  )}
+                  <div className="modal-company">{Array.isArray(modalProject.tech) ? modalProject.tech.join(', ') : modalProject.tech}</div>
+                </div>
+                <div className="modal-tech">
+                  <span>Technologies:</span>
+                  {Array.isArray(modalProject.tech) ? modalProject.tech.map((tech, i) => (
+                    <span key={i} className="modal-tech-tag">{tech}</span>
+                  )) : (
+                    <span className="modal-tech-tag">{modalProject.tech}</span>
+                  )}
+                </div>
+                <ul className="modal-desc">
+                  {modalProject.description.map((desc, i) => <li key={i}>{desc}</li>)}
+                </ul>
+                <button className="modal-close" onClick={() => setModalProject(null)}>Close</button>
+              </div>
+            </div>
+          ),
+          document.body
+        )
+      : null
   );
 
   const renderContent = () => {
