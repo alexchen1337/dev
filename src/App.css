@@ -203,6 +203,15 @@ body, html {
   transition: transform 0.3s ease;
 }
 
+/* shared underline for animated tabs */
+.tab-underline {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 3px;
+  background: var(--gradient-anime);
+  border-radius: 2px;
+}
+
 .tab-btn:hover {
   color: var(--text-primary);
 }
@@ -212,7 +221,8 @@ body, html {
 }
 
 .tab-btn.active::after {
-  transform: scaleX(1);
+  /* disabled in favor of framer-motion shared underline */
+  transform: scaleX(0);
 }
 
 .tab-btn:focus, .tab-btn:active {
@@ -450,6 +460,7 @@ body, html {
   color: #fff;
   border-color: var(--accent-pink);
 }
+.retro-link { position: relative; }
 .retro-icon {
   display: flex;
   align-items: center;
@@ -695,6 +706,11 @@ body, html {
   margin-top: 0.2rem;
   margin-bottom: 0.1rem;
   font-weight: 400;
+}
+
+/* accessibility: reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
 @media (max-width: 1200px) {
